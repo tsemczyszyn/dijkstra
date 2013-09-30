@@ -7,6 +7,8 @@ class Node(object):
         self.neighbours = []
         self.distances = []
         self.visited = False
+        self.distance = float("inf")
+        self.previous = ''
 
     def join(self, nodename, d):
         self.neighbours.append(nodename)
@@ -62,6 +64,22 @@ g.join(d, 19)
 g.join(e, 8)
 g.join(f, 14)
 
-def dijkstra(start, end):
+def dijkstra(start):
 
-    min([(node, distance) for node, distance in start.get_neigh_unvisited()])
+    start.distance = 0 
+    current_node = start
+    
+    min([(node, distance) for node, distance in current_node.get_neigh_unvisited()])
+
+    if current_node.distance + node.distance > node.distance:
+        node.distance = current_node.distance+node.distance
+        node.previous = current_node
+        
+    node.visited = True
+    current_node = node
+
+        
+
+
+
+
