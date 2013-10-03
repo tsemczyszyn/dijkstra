@@ -2,6 +2,8 @@
 
 class Node(object):
 
+    distance = ''
+
     def __init__(self, name):
         self.name = name 
         self.neighbours = []
@@ -35,8 +37,8 @@ class Node(object):
 
         for node, distance in neighbours:
 
-            if self.distance + distance < node.distance:
-                node.distance = self.distance+node.distance
+            if (self.distance + distance) < node.distance:
+                node.distance = self.distance+distance
                 node.previous = self 
         
         self.visited = True
