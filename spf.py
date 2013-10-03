@@ -24,7 +24,6 @@ class Node(object):
 
     def dijkstra(self):
 
-        self.visited=True
 
         n_nodes = self.get_neigh_unvisited()
         neighbours = sorted(n_nodes, key=lambda distance: distance[1]) 
@@ -37,10 +36,10 @@ class Node(object):
             if (self.distance + distance) < node.distance:
                 node.distance = self.distance+distance
                 node.previous = self 
+                print self.name + " heading to " + node.name
                 node.dijkstra()
 
-                            
-
+        self.visited=True
 
 
 a = Node('a')
