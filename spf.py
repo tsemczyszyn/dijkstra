@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import heapq
+
 class Node(object):
 
     def __init__(self, name):
@@ -7,8 +9,17 @@ class Node(object):
         self.neighbours = []
         self.distances = []
         self.visited = False
-        self.distance = float("inf")
+        self.distance = float("inf") 
         self.previous = ''
+
+    def __cmp__(self, other):
+
+        if self.distance > other.distance:
+            return 1
+        elif self.distance < other.distance:
+            return -1
+        else:
+            return 0
 
     def join(self, nodename, d):
         self.neighbours.append(nodename)
@@ -23,7 +34,6 @@ class Node(object):
         return [(node, distance) for node, distance in zip(self.neighbours, self.distances) if node.visited == False]
 
     def dijkstra(self):
-
 
         n_nodes = self.get_neigh_unvisited()
         neighbours = sorted(n_nodes, key=lambda distance: distance[1]) 
@@ -84,5 +94,6 @@ g.join(f, 14)
 def dijkstra(start):
 
     start.distance = 0 
-    start.dijkstra()
+
+    
     
