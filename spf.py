@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import heapq
+import time
 
 class Node(object):
 
@@ -21,6 +22,9 @@ class Node(object):
         else:
             return 0
 
+    def __str__(self):
+        return self.name
+
     def join(self, nodename, d):
         self.neighbours.append(nodename)
         self.distances.append(d)
@@ -32,25 +36,6 @@ class Node(object):
 
     def get_neigh_unvisited(self):
         return [(node, distance) for node, distance in zip(self.neighbours, self.distances) if node.visited == False]
-
-    def dijkstra(self):
-
-        n_nodes = self.get_neigh_unvisited()
-        neighbours = sorted(n_nodes, key=lambda distance: distance[1]) 
-
-        if not neighbours:
-           return
-
-        for node, distance in neighbours:
-
-            if (self.distance + distance) < node.distance:
-                node.distance = self.distance+distance
-                node.previous = self 
-                print self.name + " heading to " + node.name
-                node.dijkstra()
-
-        self.visited=True
-
 
 a = Node('a')
 b = Node('b')
@@ -91,9 +76,44 @@ g.join(d, 19)
 g.join(e, 8)
 g.join(f, 14)
 
+
 def dijkstra(start):
 
+    nodelist = [start]
     start.distance = 0 
+    heapq.heapify(nodelist)
 
-    
-    
+    while nodelist:
+
+        current_node = heapq.heappop(nodelist)
+        n_nodes = current_node.get_neigh_unvisited()
+
+        if not n_nodes:
+           continue 
+
+        for node, distance in n_nodes:
+
+            if (current_node.distance + distance) < node.distance:
+                node.distance = current_node.distance+distance
+                node.previous = current_node
+
+            if node not in nodelist:
+                nodelist.append(node)
+
+        heapq.heapify(nodelist)
+        current_node.visited=True
+
+def shortestPath(end):
+
+    path = []
+    path.append(end)
+    next_hop = end.previous
+
+    while next_hop:
+        path.append(next_hop)
+        next_hop = next_hop.previous
+
+    path.reverse()
+
+    return "->".join([str(node) for node in path])
+
