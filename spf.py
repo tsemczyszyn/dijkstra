@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import heapq
-import time
 
 class Node(object):
 
@@ -9,9 +8,7 @@ class Node(object):
         self.name = name 
         self.neighbours = []
         self.distances = []
-        self.visited = False
-        self.distance = float("inf") 
-        self.previous = ''
+        self.reset()
 
     def __cmp__(self, other):
 
@@ -33,6 +30,11 @@ class Node(object):
         index = self.neighbours.index(nodename)
         self.neighbours.remove(nodename)
         self.distances.pop(index)
+
+    def reset(self):
+        self.visited = False
+        self.distance = float("inf") 
+        self.previous = ''
 
     def get_neigh_unvisited(self):
         return [(node, distance) for node, distance in zip(self.neighbours, self.distances) if node.visited == False]
@@ -76,6 +78,7 @@ g.join(d, 19)
 g.join(e, 8)
 g.join(f, 14)
 
+nodes = (a, b, c, d, e, f, g)
 
 def dijkstra(start):
 
@@ -103,7 +106,11 @@ def dijkstra(start):
         heapq.heapify(nodelist)
         current_node.visited=True
 
-def shortestPath(end):
+def shortestPath(end, start=None):
+    
+    if start:
+        [node.reset() for node in nodes]
+        dijkstra(start)
 
     path = []
     path.append(end)
